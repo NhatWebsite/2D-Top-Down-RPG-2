@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllers : MonoBehaviour
+public class PlayerControllers : Singleton<PlayerControllers>
 {
 
     public bool FancingLeft { get{ return facingleft; } }
-    public Transform Transform { get { return this.transform; } }
+   
 
-    public static PlayerControllers Instance;
+  
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer myTrailRenderer;
@@ -23,9 +23,9 @@ public class PlayerControllers : MonoBehaviour
 
     public bool facingleft = false;
     private bool isDashing = false;
-    private void Awake()
-    {
-        Instance = this;
+   protected override void Awake() {
+        base.Awake();
+       
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
