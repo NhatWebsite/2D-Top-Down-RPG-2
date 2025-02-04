@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,42 +6,54 @@ using UnityEngine;
 public class PlayerControllers : Singleton<PlayerControllers>
 {
 
-    public bool FancingLeft { get{ return facingleft; } }
-   
+    public bool FancingLeft { get { return facingleft; } }
 
-  
+
+
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float dashSpeed = 4f;
     [SerializeField] private TrailRenderer myTrailRenderer;
+    [SerializeField] private Transform weaponCollider;
 
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator myAnimator;
     private SpriteRenderer mySpriteRender;
+    private Knockback knockback;
     private float startingMoveSpeed;
 
 
     public bool facingleft = false;
     private bool isDashing = false;
-   protected override void Awake() {
+    protected override void Awake()
+    {
         base.Awake();
-       
+
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         mySpriteRender = GetComponent<SpriteRenderer>();
+        knockback = GetComponent<Knockback>();
     }
     private void Start()
     {
         playerControls.Combat.Dash.performed += _ => Dash();
-        startingMoveSpeed= moveSpeed;
+        startingMoveSpeed = moveSpeed;
+        ActiveInvetory.Instance.EquipStartingWeapon();  
     }
 
 
     private void OnEnable()
     {
         playerControls.Enable();
+    }
+    private void OnDisable()
+    {
+        if (playerControls != null)
+        {
+            playerControls.Disable();
+        }
     }
     private void Update()
     {
@@ -50,6 +63,10 @@ public class PlayerControllers : Singleton<PlayerControllers>
     {
         AdjustPlayerFacingDirection();
         Move();
+    }
+    public Transform GetWeaponCollider()
+    {
+        return weaponCollider;
     }
     private void PlayerInput()
     {
@@ -61,6 +78,7 @@ public class PlayerControllers : Singleton<PlayerControllers>
     }
     private void Move()
     {
+        if(knockback.GettingKnockedback || PlayerHealth.Instance.isDead) { return; }
         rb.MovePosition(rb.position + movement * (moveSpeed * Time.fixedDeltaTime));
     }
     private void AdjustPlayerFacingDirection()
@@ -80,8 +98,9 @@ public class PlayerControllers : Singleton<PlayerControllers>
     }
     private void Dash()
     {
-        if (!isDashing)
+      if(!isDashing && Stamina.Instance.CurrentStamina>0)
         {
+            Stamina.Instance.UseStamina();
             isDashing = true;
             moveSpeed *= dashSpeed;
             myTrailRenderer.emitting = true;
@@ -93,10 +112,11 @@ public class PlayerControllers : Singleton<PlayerControllers>
         float dashTime = .2f;
         float dashCD = .25f;
         yield return new WaitForSeconds(dashTime);
-        moveSpeed =startingMoveSpeed;
+        moveSpeed = startingMoveSpeed;
         myTrailRenderer.emitting = false;
         yield return new WaitForSeconds(dashCD);
-        isDashing=false;
+        isDashing = false;
     }
+
 }
 

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7697088343706498508}
   - component: {fileID: 510683962634175356}
   - component: {fileID: 6886892518766896362}
+  - component: {fileID: -984181391374519651}
+  - component: {fileID: 8352659029093254760}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -120,3 +122,31 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.35200274}
   m_Size: {x: 1, y: 1.078223}
   m_Direction: 0
+--- !u!114 &-984181391374519651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6512726211500685154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 877134574ae79434988b0524bcb64d8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goldCoin: {fileID: 2745592087208111846, guid: 75730838446a959408ee58651500388d, type: 3}
+  healthGlobe: {fileID: 2745592087208111846, guid: c90ee6b5b577ada46a75a20759fb944c, type: 3}
+  staminaGlobe: {fileID: 2745592087208111846, guid: 69c44c919ebaea4448e71c7120d0a6e2, type: 3}
+--- !u!114 &8352659029093254760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6512726211500685154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1dfc7f65cc9fb1244884f018e4854447, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyVFX: {fileID: 7021100464656475389, guid: b306a7dd4d9c3a842846be8a81333f71, type: 3}
